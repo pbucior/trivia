@@ -82,8 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case R.id.next_button:
-                currentQuestionIndex = (currentQuestionIndex + 1) % questionList.size();
-                updateQuestion();
+                goNext();
                 break;
         }
     }
@@ -124,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onAnimationEnd(Animation animation) {
                 cardView.setCardBackgroundColor(Color.WHITE);
+                goNext();
             }
 
             @Override
@@ -149,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onAnimationEnd(Animation animation) {
                 cardView.setCardBackgroundColor(Color.WHITE);
+                goNext();
             }
 
             @Override
@@ -180,5 +181,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         highestScore = score;
         Preferences.updateHighestScore(highestScore);
         showHighestScore();
+    }
+
+    private void goNext() {
+        currentQuestionIndex = (currentQuestionIndex + 1) % questionList.size();
+        updateQuestion();
     }
 }
