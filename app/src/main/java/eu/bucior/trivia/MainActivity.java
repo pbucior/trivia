@@ -1,9 +1,13 @@
 package eu.bucior.trivia;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -57,9 +61,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.true_button:
                 checkAnswer(true);
+                updateQuestion();
                 break;
             case R.id.false_button:
                 checkAnswer(false);
+                updateQuestion();
                 break;
             case R.id.prev_button:
                 if (currentQuestionIndex > 0) {
@@ -81,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             toastMessageId = R.string.correct_answer;
         } else {
             toastMessageId = R.string.wrong_answer;
+            shakeAnimation();
         }
         Toast.makeText(MainActivity.this, toastMessageId, Toast.LENGTH_SHORT).show();
     }
@@ -89,5 +96,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String question = questionList.get(currentQuestionIndex).getAnswer();
         questionTextView.setText(question);
         questionCounterTextView.setText(currentQuestionIndex + "/" + questionList.size());
+    }
+
+    private void shakeAnimation() {
+        Animation shake = AnimationUtils.loadAnimation(MainActivity.this, R.anim.shake_animation);
+        CardView cardView = findViewById(R.id.cardView);
+        cardView.setAnimation(shake);
     }
 }
