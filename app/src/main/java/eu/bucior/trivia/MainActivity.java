@@ -23,11 +23,12 @@ import eu.bucior.trivia.data.QuestionBank;
 import eu.bucior.trivia.model.Question;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private TextView questionTextView, questionCounterTextView;
+    private TextView questionTextView, questionCounterTextView, scoreTextView;
     private Button trueButton, falseButton;
     private ImageButton prevButton, nextButton;
     private int currentQuestionIndex = 0;
     private List<Question> questionList;
+    private int score = 0;
 
 
     @Override
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         questionTextView = findViewById(R.id.question_text);
         questionCounterTextView = findViewById(R.id.counter_text);
+        scoreTextView = findViewById(R.id.score_text);
 
         trueButton = findViewById(R.id.true_button);
         falseButton = findViewById(R.id.false_button);
@@ -55,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 questionCounterTextView.setText(currentQuestionIndex + "/" + questionList.size());
             }
         });
+
+        setScore();
 
     }
 
@@ -88,9 +92,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (userChooseCorrect == answerIsTrue) {
             toastMessageId = R.string.correct_answer;
             fadeView();
+            increaseScore();
         } else {
             toastMessageId = R.string.wrong_answer;
             shakeAnimation();
+            resetScore();
         }
         Toast.makeText(MainActivity.this, toastMessageId, Toast.LENGTH_SHORT).show();
     }
@@ -147,5 +153,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
+    }
+
+    private void setScore() {
+        scoreTextView.setText(getResources().getString(R.string.score, score));
+    }
+
+    private void resetScore() {
+        score = 0;
+        setScore();
+    }
+
+    private void increaseScore() {
+        score++;
+        setScore();
     }
 }
