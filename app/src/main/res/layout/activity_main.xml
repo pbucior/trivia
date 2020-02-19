@@ -111,4 +111,15 @@
         app:layout_constraintTop_toBottomOf="@+id/textView"
         tools:text="@string/score" />
 
+    <TextView
+        android:id="@+id/highest_score_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/chewy"
+        android:text="TextView"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

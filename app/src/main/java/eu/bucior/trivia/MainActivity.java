@@ -1,11 +1,7 @@
 package eu.bucior.trivia;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -15,20 +11,25 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import eu.bucior.trivia.data.AnswerListAsyncResponse;
+import eu.bucior.trivia.data.Preferences;
 import eu.bucior.trivia.data.QuestionBank;
 import eu.bucior.trivia.model.Question;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private TextView questionTextView, questionCounterTextView, scoreTextView;
+    private TextView questionTextView, questionCounterTextView, scoreTextView, highestScoreTextView;
     private Button trueButton, falseButton;
     private ImageButton prevButton, nextButton;
     private int currentQuestionIndex = 0;
     private List<Question> questionList;
     private int score = 0;
+    private int highestScore = Preferences.getHighestScore();
 
 
     @Override
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         questionTextView = findViewById(R.id.question_text);
         questionCounterTextView = findViewById(R.id.counter_text);
         scoreTextView = findViewById(R.id.score_text);
+        highestScoreTextView = findViewById(R.id.highest_score_text);
 
         trueButton = findViewById(R.id.true_button);
         falseButton = findViewById(R.id.false_button);
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         setScore();
-
+        showHighestScore();
     }
 
     @Override
@@ -93,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             toastMessageId = R.string.correct_answer;
             fadeView();
             increaseScore();
+            if (score > highestScore) saveHighestScore();
         } else {
             toastMessageId = R.string.wrong_answer;
             shakeAnimation();
@@ -167,5 +170,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void increaseScore() {
         score++;
         setScore();
+    }
+
+    private void showHighestScore() {
+        highestScoreTextView.setText(getResources().getString(R.string.highest_score, highestScore));
+    }
+
+    private void saveHighestScore() {
+        highestScore = score;
+        Preferences.updateHighestScore(highestScore);
+        showHighestScore();
     }
 }
