@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView questionTextView, questionCounterTextView, scoreTextView, highestScoreTextView;
     private Button trueButton, falseButton;
     private ImageButton prevButton, nextButton;
-    private int currentQuestionIndex = 0;
+    private int currentQuestionIndex = Preferences.getState();
     private List<Question> questionList;
     private int score = 0;
     private int highestScore = Preferences.getHighestScore();
@@ -186,5 +186,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void goNext() {
         currentQuestionIndex = (currentQuestionIndex + 1) % questionList.size();
         updateQuestion();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Preferences.setState(currentQuestionIndex);
     }
 }
